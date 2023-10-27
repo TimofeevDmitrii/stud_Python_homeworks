@@ -31,11 +31,6 @@ for k,v in hike.items(): # находим множетсво всех уника
         all_unic_elements=set(v) 
 print(f'all_unic_elements:\n{all_unic_elements}')
 
-# all_unic_elements_dict = {} # создадим словарь вещей и будем в него заносить значения - у кого есть данная вещь
-# for i in all_unic_elements:
-#     all_unic_elements_dict[i]=''
-# print(f'all_unic_elements_dict\n{all_unic_elements_dict}')
-
 for i in hike: #Находим вещи, встречающиеся у каждого
     if common_things!=set(): 
         common_things = common_things.intersection(set(hike[i]))
