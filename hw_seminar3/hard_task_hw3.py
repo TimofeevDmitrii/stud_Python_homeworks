@@ -13,18 +13,22 @@
 # }
 
 hike = {
-'Aaz': ("спички", "спальник", "дрова", "топор",'нож','кружка'),
-'Skeeve': ("спальник", "спички", "вода", "еда", 'ружье'),
-'Tananda': ("вода", "спички", "косметичка",'нож','кружка'),
+'Aaz': ("спички", "спальник", "дрова", "топор",'кружка',"фонарь"),
+'Skeeve': ("спальник", "спички", "вода", "еда", 'ружье',"фонарь"),
+'Tananda': ("вода", "спички", "косметичка",'нож','кружка',"фонарь"),
+'John': ("газовая горелка", "чай","кружка","спальник","спички","фонарь"),
+'Mary': ( "палатка", "спички", "спальник","кружка","фонарь")
 }
 all_unic_elements=set() # множетсво всех уникальных вещей среди наборов у друзей
 common_things=set() #эти вещи встречаются у каждого
 unic_things=dict() #эти вещи встречаются только у кого-то одного
-mans_not_have_common_thing=dict() #люди, у которых нет какой-либо вещи, которая встречается у всех
+persons_who_not_have_common_things=dict() #люди, у которых нет какой-либо вещи, которая встречается у всех
 
 for k,v in hike.items(): # находим множетсво всех уникальных вещей среди наборов у друзей
-    for i in v:
-        all_unic_elements.add(i)
+    if all_unic_elements!=set(): 
+        all_unic_elements = all_unic_elements.union(set(v))
+    else:
+        all_unic_elements=set(v) 
 print(f'all_unic_elements:\n{all_unic_elements}')
 
 # all_unic_elements_dict = {} # создадим словарь вещей и будем в него заносить значения - у кого есть данная вещь
@@ -34,11 +38,9 @@ print(f'all_unic_elements:\n{all_unic_elements}')
 
 for i in hike: #Находим вещи, встречающиеся у каждого
     if common_things!=set(): 
-        curr_set = set(hike[i])
-        common_things = common_things.intersection(curr_set)
+        common_things = common_things.intersection(set(hike[i]))
     else:
-        for k in hike[i]:
-            common_things.add(k)  
+        common_things=set(hike[i])  
 print(f'common_things:\n{common_things}')
 
 
@@ -51,15 +53,14 @@ for i in hike:   # находим вещи, встречающиеся толь�
         unic_things[tuple(curr_set)]=i
 print(f'unic_things:\n{unic_things}')
 
-for i in hike:
+for i in hike:  # находим вещи, которые есть у каждого, кроме одного члена группы
     curr_set = set()
     for j in hike:
         if i!=j:
             if curr_set!=set(): 
                 curr_set = curr_set.intersection(set(hike[j]))
             else:
-                for k in hike[j]:
-                    curr_set.add(k)
+                curr_set=set(hike[j])
     if curr_set.difference(set(hike[i]))!=set():
-        mans_not_have_common_thing[tuple(curr_set.difference(set(hike[i])))]=i
-print(f'mans_not_have_common_thing:\n{mans_not_have_common_thing}')
+        persons_who_not_have_common_things[tuple(curr_set.difference(set(hike[i])))]=i
+print(f'persons_who_not_have_common_things:\n{persons_who_not_have_common_things}')
