@@ -24,13 +24,15 @@ var3 = '11 20 30 1 50 24 78 9 1 ' # элементы второго множес
 # print(f'{var1}\n{var2}\n{var3}')
 a = set(var2.split())
 b = set(var3.split())
-inters = a.intersection(b)
+inters = a.intersection(b)  # inters= a & b даст аналогичный результат (было на семинаре)
 #print(inters)
 list_inters = list(inters)
 #print(list_inters)
 for i in range(len(list_inters)):        # list_inters = [int(i) for i in inters]
     list_inters[i] = int(list_inters[i]) 
 #print(list_inters)
+# вместо сортировки выбором можно было бы написать result=sorted(inters) - сортед переводит множество в список
+# и сортирует его (было на семинаре)
 count = len(list_inters)
 if count!=0: 
     while count!=1:          # сортировка методом выбора
@@ -45,6 +47,7 @@ if count!=0:
 #print(list_inters)
 for i in list_inters:
     print(i,end=' ')
+# print(*inters) - множестов распакуется без скобок, значения будут идти через пробел (было на семинаре)
 
 # что подставляет автотест:
 # 1) var1 = '3 4'
