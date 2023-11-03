@@ -34,21 +34,20 @@ print(Sum(101,4))
 # сложить между собой N-ое количество неотрицательных чисел.
 # Правда, без цикла тут не обойтись)))
 
-# input_numbers = (1,3,60,10) # (1,3,60,10)
-# def Sum(*args):
-#     if set(args)=={0}:
-#         return 0
-#     elif set(args)==set():
-#         return '' 
-#     else:
-#         list_var=list(args)
-#         res=0
-#         for i in range(len(list_var)):
-#             if list_var[i]!=0:
-#                 res+=1
-#                 list_var[i]-=1
-#         return res+Sum(*list_var)
-# print(Sum(input_numbers))
+input_numbers = (1,0,6,10) # (1,3,60,10)
+def Sum(*args):
+    if set(args)=={0}:
+        return 0
+    elif set(args)==set():
+        return '' 
+    else:
+        list_var=[i for i in args if i!=0]  # if i!=0 condition added 
+        res=0
+        for i in range(len(list_var)):             # deleted if i!=0 condition
+            res+=1
+            list_var[i]-=1
+        return res+Sum(*list_var)
+print(Sum(*input_numbers))
 
 
 # def test_fun(*params):  # определяем, что же такое в этом случае для функции params 
