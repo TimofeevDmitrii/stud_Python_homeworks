@@ -77,3 +77,45 @@ for i in range(1,len(list_1)):
     hazard_word = ''
 for i in infection_list:
     print(i, end=' ')
+
+
+
+# Другой вариант решения задачи через срезы (от Ирины Лукашовой), немного измененнный мной:
+
+# input_mess='''9
+# osfjwoiergwoignaewpjofwoeijfnwfonewfoignewtowenffnoeiwowjfninoiwfen
+# anton
+# aoooooooooontooooo
+# elelelelelelelelelel
+# ntoneeee
+# tonee
+# 253235235a5323352n25235352t253523523235oo235523523523n
+# antoooooooooooooooooooooooooooooooooooooooooooooooooooon
+# unton'''
+
+
+# input_mess='''6
+# 222anton456
+# a1n1t1o1n1
+# 0000a0000n00t00000o000000n
+# gylfole
+# richard
+# ant0n'''
+
+
+
+# refregerator=input_mess.split('\n')
+# refregerator.pop(0) # удалим элемент, обозначающий количество холодильников в сообщении
+# # print(refregerator)
+# virus_name='anton'
+# for i in refregerator:
+#     existance=True
+#     number=refregerator.index(i)+1 # номер проверяемого холодильника
+#     for k in virus_name:
+#         if k in i and existance:
+#             i=i[i.index(k)+1:]
+#         else:
+#             existance=False
+#             break
+#     if existance:
+#         print(number, end=' ')
