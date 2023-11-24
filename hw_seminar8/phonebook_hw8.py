@@ -7,7 +7,7 @@ def show_menu():
           '6. Добавить абонента в справочник',
           '7. Сохранить изменения в справочнике',
           '8. Закончить работу', sep = '\n')
-    choice=int(input("Введите команду: "))
+    choice=int(input("Введите номер команды: "))
     return choice
 
 def read_txt(txt_file_name):
@@ -26,7 +26,7 @@ def read_txt(txt_file_name):
     data_txt.close()
     return result_list
 
-def print_result(phnb_lst): # На вход идет список словарей: один контакт - один словарь с 4 ключами 
+def print_contact(phnb_lst): # На вход идет список словарей: один контакт - один словарь с 4 ключами 
     for i in phnb_lst:
         for k,v in i.items():
             print (k,':',v)
@@ -82,7 +82,7 @@ def find_contact_index_for_changing(phnb_lst,last_name): # будет испол
     if len(find_lst)!=0:
         if len(find_lst)>1:
             print("Найдено несколько контактов с такой фамилией, необходимо уточнить id\n")
-            print_result([phnb_lst[cont_ind] for cont_ind in find_lst])
+            print_contact([phnb_lst[cont_ind] for cont_ind in find_lst])
             id=input("Введите id для уточнения: ")
             not_find_id=True
             for cont_ind in find_lst:
@@ -111,7 +111,7 @@ def show_edit_menu():
           '4. Описание',
           '5. Подтвердить изменения',
           '6. Отменить изменения', sep = '\n')  # id менять нельзя, он будет у каждого уникальный и будет назначаться при создании автоматически
-    choice=int(input("Введите команду: "))
+    choice=int(input("Введите номер команды: "))
     return choice
 
 def edit_contact(phnb_lst,last_name):
@@ -119,7 +119,7 @@ def edit_contact(phnb_lst,last_name):
     if type(cont_ind)==str:
         print(cont_ind) 
     else:
-        print_result([phnb_lst[cont_ind]])
+        print_contact([phnb_lst[cont_ind]])
         choice=show_edit_menu()
         fields=['Фамилия', 'Имя', 'Телефон', 'Описание']
         edit=False
@@ -131,7 +131,7 @@ def edit_contact(phnb_lst,last_name):
                 if new_data!='' and new_data in [i['Телефон'] for i in phnb_lst]: # new_contact_data['Телефон']!='' - добавим исключение, когда мы хотим создать несколько контактов, но пока не будем заполнять поле "Телефон" в них
                     exist_number_ind=[i['Телефон'] for i in phnb_lst].index(new_data) # находим индекс контакта, у которого оказался такой же номер телефона
                     print("Контакт с таким номером уже существует!")
-                    print_result([phnb_lst[exist_number_ind]])
+                    print_contact([phnb_lst[exist_number_ind]])
                     choice=show_edit_menu()
                     continue
             elif  k=='Фамилия':
@@ -146,7 +146,7 @@ def edit_contact(phnb_lst,last_name):
         if choice==5 and edit==True:
             print("Контакт изменен")
             phnb_lst[cont_ind]=edited_contact
-            print_result([phnb_lst[cont_ind]])
+            print_contact([phnb_lst[cont_ind]])
             
 
 def delete_by_lastname(phnb_lst,last_name):
@@ -154,7 +154,7 @@ def delete_by_lastname(phnb_lst,last_name):
     if type(cont_ind)==str:
         print(cont_ind) 
     else:
-        print_result([phnb_lst[cont_ind]])
+        print_contact([phnb_lst[cont_ind]])
         delete=''
         while delete not in ['yes','no']:
             delete=input("Подтвердите удаление данного контакта - напечатайте yes или no: ")
@@ -166,7 +166,7 @@ def find_by_number(phnb_lst, tel_number):
     not_find_contact=True
     for i in phnb_lst:
         if i['Телефон']==tel_number:
-            print_result([i]) # return i
+            print_contact([i]) # return i
             not_find_contact=False
     if not_find_contact:
         print("Контакта с таким номером телефона нет в справочнике")
@@ -186,11 +186,11 @@ def add_new_contact(phnb_lst):
     if new_contact_data['Телефон']!='' and new_contact_data['Телефон'] in [i['Телефон'] for i in phnb_lst]: # new_contact_data['Телефон']!='' - добавим исключение, когда мы хотим создать несколько контактов, но пока не будем заполнять поле "Телефон" в них
         exist_number_ind=[i['Телефон'] for i in phnb_lst].index(new_contact_data['Телефон']) # находим индекс контакта, у которого оказался такой же номер телефона
         print("Контакт с таким номером уже существует!")
-        print_result([phnb_lst[exist_number_ind]])
+        print_contact([phnb_lst[exist_number_ind]])
     else:
         phnb_lst.append(new_contact_data)
         print('Контакт добавлен в справочник')
-        print_result([new_contact_data])
+        print_contact([new_contact_data])
     
 
 def write_txt(filename , phnb_lst):
@@ -214,16 +214,16 @@ def work_with_phonebook(filename):
         if choice==1: # '1. Распечатать справочник'
             print_phonebook(phone_book)
         elif choice==2: # '2. Найти телефон по фамилии'
-            last_name=input('lastname ')
+            last_name=input('Фамилия: ')
             find_number_by_lastname(phone_book,last_name)
         elif choice==3: # '3. Изменить контакт'
-            last_name=input('lastname ')
+            last_name=input('Фамилия: ')
             edit_contact(phone_book,last_name)
         elif choice==4: # '4. Удалить запись'
-            lastname=input('lastname ')
+            lastname=input('Фамилия: ')
             delete_by_lastname(phone_book,lastname)
         elif choice==5: # '5. Найти абонента по номеру телефона'
-            number=input('number ') 
+            number=input('Номер: ') 
             find_by_number(phone_book,number)
         elif choice==6: # '6. Добавить абонента в справочник'
             add_new_contact(phone_book)
