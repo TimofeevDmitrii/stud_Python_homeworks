@@ -126,7 +126,20 @@ def edit_contact(phnb_lst,last_name):
         edited_contact=phnb_lst[cont_ind].copy()
         while choice not in [5,6]:
             k=fields[choice-1]
-            new_data=input(f'{k}: ')
+            new_data=input(f'{k}: ').strip().replace(',','')
+            if k=='Телефон':
+                if new_data!='' and new_data in [i['Телефон'] for i in phnb_lst]: # new_contact_data['Телефон']!='' - добавим исключение, когда мы хотим создать несколько контактов, но пока не будем заполнять поле "Телефон" в них
+                    exist_number_ind=[i['Телефон'] for i in phnb_lst].index(new_data) # находим индекс контакта, у которого оказался такой же номер телефона
+                    print("Контакт с таким номером уже существует!")
+                    print_result([phnb_lst[exist_number_ind]])
+                    choice=show_edit_menu()
+                    continue
+            elif  k=='Фамилия':
+                letter_symbols=[chr(i) for i in range(1040,1104)]+[chr(i) for i in range(65,91)]+[chr(i) for i in range(97,123)] # все буквенные символы кириллицы и латиницы
+                if set(new_data)&set(letter_symbols)==set():
+                    print("Поле 'Фамилия' обязательно для заполнения и должно содержать буквенные символы")
+                    choice=show_edit_menu()
+                    continue
             edited_contact[k]=new_data
             edit=True
             choice=show_edit_menu()
@@ -169,7 +182,8 @@ def add_new_contact(phnb_lst):
     while set(new_contact_data['Фамилия'])&set(letter_symbols)==set():
         print("Поле 'Фамилия' обязательно для заполнения и должно содержать буквенные символы")
         new_contact_data['Фамилия']=input(f"Введите данные для поля 'Фамилия': ").strip().replace(',','')
-    if new_contact_data['Телефон'] in [i['Телефон'] for i in phnb_lst]:
+    # будем считать, что телефон для каждого абонента должен быть уникальным; иными словами не будет абонентов с одинаковым телефоном
+    if new_contact_data['Телефон']!='' and new_contact_data['Телефон'] in [i['Телефон'] for i in phnb_lst]: # new_contact_data['Телефон']!='' - добавим исключение, когда мы хотим создать несколько контактов, но пока не будем заполнять поле "Телефон" в них
         exist_number_ind=[i['Телефон'] for i in phnb_lst].index(new_contact_data['Телефон']) # находим индекс контакта, у которого оказался такой же номер телефона
         print("Контакт с таким номером уже существует!")
         print_result([phnb_lst[exist_number_ind]])
