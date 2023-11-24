@@ -5,8 +5,9 @@ def show_menu():
           '4. Удалить запись',
           '5. Найти абонента по номеру телефона',
           '6. Добавить абонента в справочник',
-          '7. Сохранить изменения в справочнике',
-          '8. Закончить работу', sep = '\n')
+          '7. Скопировать контакт из другого справочника',
+          '8. Сохранить изменения в справочнике',
+          '9. Закончить работу', sep = '\n')
     choice=int(input("Введите номер команды: "))
     return choice
 
@@ -202,6 +203,30 @@ def write_txt(filename , phnb_lst):
             phout.write(f'{s[:-1]}\n')
 
 
+
+def add_new_contact_from_another_phonebook(file_name,phonebook1): # будем считать, что используется справочник номеров с такимии же полями и с таким же порядком следования полей
+    try:
+        phonebook2=read_txt(file_name)
+    except FileNotFoundError:
+        return 'С таким именем файла нет'  
+    print_phonebook(phonebook2)
+    id_for_copy=input("Введите id контакта, который Вы хотите скопировать (или напечатайте 'выйти'): ")
+    if id_for_copy=='выйти':
+        return ''
+    if id_for_copy in [i['id'] for i in phonebook2]:
+        id_contact_index=[i['id'] for i in phonebook2].index(id_for_copy)
+        contact_for_copy=phonebook2[id_contact_index]
+    else:
+        return 'Контакта с таким id в данном справочнике нет'
+    if contact_for_copy['Телефон']!='' and contact_for_copy['Телефон'] in [i['Телефон'] for i in phonebook1]:
+        print('Внимание!')
+        find_by_number(phonebook1, contact_for_copy['Телефон'])
+        return 'Контакт с таким номером уже есть в справочнике, копирование не выполнено'
+    else:
+        contact_for_copy['id']=give_id_to_new_contact(phonebook1)
+        return contact_for_copy
+
+
 def work_with_phonebook(filename):
 	
 
@@ -209,7 +234,7 @@ def work_with_phonebook(filename):
 
     phone_book=read_txt(filename)  # будет формироваться список словарей: один контакт-один словарь с 4 полями 
 
-    while (choice!=8):
+    while (choice!=9):
 
         if choice==1: # '1. Распечатать справочник'
             print_phonebook(phone_book)
@@ -227,7 +252,15 @@ def work_with_phonebook(filename):
             find_by_number(phone_book,number)
         elif choice==6: # '6. Добавить абонента в справочник'
             add_new_contact(phone_book)
-        elif choice==7: # '7. Сохранить изменения в справочнике'
+        elif choice==7: # '7. Скопировать контакт из другого справочника'
+            file_name_for_copy=input('Введите название файла справочника: ')  # Используйте файл phonebook_copy.txt из репозитория hw_seminar8/
+            new_contact=add_new_contact_from_another_phonebook(file_name_for_copy,phone_book)
+            if type(new_contact)==str:
+                print(new_contact)
+            else:
+                phone_book.append(new_contact)
+                print("Контакт успешно добавлен")
+        elif choice==8: # '8. Сохранить изменения в справочнике'
             write_txt(filename,phone_book)
         choice=show_menu()
 
