@@ -1,3 +1,6 @@
+import csv
+
+
 def show_menu():
     print('1. Распечатать справочник',
           '2. Найти телефон по фамилии',
@@ -7,7 +10,8 @@ def show_menu():
           '6. Добавить абонента в справочник',
           '7. Скопировать контакт из другого справочника',
           '8. Сохранить изменения в справочнике',
-          '9. Закончить работу', sep = '\n')
+          '9. Экспорт справочника в csv файл',
+          '10. Закончить работу', sep = '\n')
     choice=int(input("Введите номер команды: "))
     return choice
 
@@ -227,6 +231,15 @@ def add_new_contact_from_another_phonebook(file_name,phonebook1): # будем �
         return contact_for_copy
 
 
+def export_to_csv(phnb_lst,filename):
+    fields=['id','Фамилия', 'Имя', 'Телефон', 'Описание']
+    with open(filename,'w',encoding='utf-8', newline='') as phout_csv:
+        writer = csv.DictWriter(phout_csv, fields)
+        writer.writeheader()
+        writer.writerows(phnb_lst)
+
+
+
 def work_with_phonebook(filename):
 	
 
@@ -234,7 +247,7 @@ def work_with_phonebook(filename):
 
     phone_book=read_txt(filename)  # будет формироваться список словарей: один контакт-один словарь с 4 полями 
 
-    while (choice!=9):
+    while (choice!=10):
 
         if choice==1: # '1. Распечатать справочник'
             print_phonebook(phone_book)
@@ -262,6 +275,10 @@ def work_with_phonebook(filename):
                 print("Контакт успешно добавлен")
         elif choice==8: # '8. Сохранить изменения в справочнике'
             write_txt(filename,phone_book)
+            print("Изменения сохранены")
+        elif choice==9: # '9. Экспорт справочника в csv файл'
+            export_to_csv(phone_book,'phonebook.csv')
+            print("Экспорт справочника завершен")
         choice=show_menu()
 
 
