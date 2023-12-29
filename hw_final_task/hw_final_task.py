@@ -18,11 +18,30 @@ pd.get_dummies(data['whoAmI'])
 
 
 #Решение без get_dummies
-lst1 = list(data['whoAmI'])
-lst_human = []
-lst_robot = []
+set_data_val = set(data['whoAmI'])
+hot_data_dict = {}
+for k in set_data_val:
+    hot_data_dict[k]=[]
+# print(hot_data_dict)
 for i in data['whoAmI']:
-    lst_human.append(i=='human')
-    lst_robot.append(i=='robot')
-hot_data = pd.DataFrame({'human':lst_human,'robot':lst_robot})
+    for key in hot_data_dict:
+       hot_data_dict[key].append(key==i)                
+hot_data = pd.DataFrame(hot_data_dict)
 print(hot_data)
+
+
+# Другой вариант решения без get_dummies 
+# import pandas as pd
+# import random
+# lst = ['robot'] * 10
+# lst += ['human'] * 10
+# random.shuffle(lst)
+# data = pd.DataFrame({'whoAmI':lst})
+# data.head()
+# print(f"{data} \n")
+# unique_values = data['whoAmI'].unique()
+# for value in unique_values:
+#     data[value] = (data['whoAmI'] == value).astype(int)
+# data.drop('whoAmI', axis=1, inplace=True)
+# data.head()
+# print(data)
